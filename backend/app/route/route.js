@@ -3,5 +3,6 @@ module.exports  = app => {
     const controller = require('../controller/userController');
 
     router.post("/create", controller.create)
+    router.get("/get",controller.findAll)
     app.use(router)
 }
