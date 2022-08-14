@@ -4,5 +4,8 @@ module.exports  = app => {
 
     router.post("/create", controller.create)
     router.get("/get",controller.findAll)
+    router.post("/findOne", controller.findOne)
+    router.put("/update/:username",controller.update)
+    router.delete("/delete/:username",controller.delete)
     app.use(router)
 }
