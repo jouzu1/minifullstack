@@ -4,7 +4,7 @@
     <!--INPUT-->
     <div class="d-flex">
       <input v-model="username" type="text" placeholder = "Enter Username" class="form-control">
-      <input type="text" placeholder = "Enter Email" class="form-control">
+      <input v-model="email" type="text" placeholder = "Enter Email" class="form-control">
       <button @click="submitButton" class="btn btn-success rounded-0">SUBMIT</button>
     </div>
     <!--TASK TABLE-->
@@ -63,12 +63,13 @@ export default {
         this.dataObj = x.data
         this.dataObj.forEach(x=>console.log(x.username))
       })
+      .catch(x=>console.log(x))
     },
     async get(username){
-      await axios.post(`http://localhost:8080/findOne`,username).then(x=>console.log('ini findOne' , x.data))
+      await axios.post(`http://localhost:8080/findOne`,username).then(x=>console.log('ini findOne' , x.data)).catch(x=>console.log(x))
     },
     async create(data){
-      await axios.post(`http://localhost:8080/create`,data).then()
+      await axios.post(`http://localhost:8080/create`,data).then(x=>console.log(x)).catch(x=>console.log(x))
     },
     async update(username, data){
       await axios.put(`http://localhost:8080/update/${username}`,data).then(x=>console.log('ini update' , x.data))
@@ -78,9 +79,11 @@ export default {
     },
 
     submitButton(){
-      if(this.username === 0){
+      if(this.username.length === 0 && this.email.length === 0){
         return
       }
+      this.create({username : this.username, email : this.email})
+      window.location.reload()
     }
   },
   mounted(){
