@@ -27,10 +27,14 @@
       <td>{{ data.createdAt }}</td>
       <td>{{ data.updatedAt }}</td>
       <td class="text-center">
-        <span class="fa fa-pen"></span>
+        <button>
+          <span class="fa fa-pen"></span>
+        </button>
       </td>
       <td class="text-center">
-        <span class="fa fa-trash"></span>
+        <button @click="deleteButton(data.username)" >
+          <span class="fa fa-trash"></span>
+        </button>
       </td>
     </tr>
   </tbody>
@@ -75,7 +79,7 @@ export default {
       await axios.put(`http://localhost:8080/update/${username}`,data).then(x=>console.log('ini update' , x.data))
     },
     async delete(username){
-      await axios.delete(`http://localhost:8080/delete/${username}`).then(x=>console.log('ini delete' , x.data))
+      await axios.delete(`http://localhost:8080/delete/${username}`).then(x=>console.log(x.data))
     },
 
     submitButton(){
@@ -84,11 +88,17 @@ export default {
       }
       this.create({username : this.username, email : this.email})
       window.location.reload()
-    }
+    },
+    deleteButton(username){
+    this.delete(username),
+    window.location.reload()
+  }
   },
   mounted(){
     this.getAll();
     this.get("test");
+    this.submitButton();
+
     // this.create({username : "jouzu", email : "jouzu"}).
     // this.update("jouzu",{username : "test"})
     // this.delete("test")
