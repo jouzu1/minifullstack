@@ -3,7 +3,7 @@
     <h2 class="text-center mt-5">List User</h2>
     <!--INPUT-->
     <div class="d-flex">
-      <input type="text" placeholder = "Enter Username" class="form-control">
+      <input v-model="username" type="text" placeholder = "Enter Username" class="form-control">
       <input type="text" placeholder = "Enter Email" class="form-control">
       <button @click="submitButton" class="btn btn-success rounded-0">SUBMIT</button>
     </div>
@@ -78,7 +78,9 @@ export default {
     },
 
     submitButton(){
-
+      if(this.username === 0){
+        return
+      }
     }
   },
   mounted(){
