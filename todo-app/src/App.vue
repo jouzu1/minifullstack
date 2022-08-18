@@ -1,16 +1,16 @@
 <template>
-<todo-app/>
+<UserApp/>
 </template>
 
 
 <script>
-import TodoApp from './components/TodoApp.vue'
+import UserApp from './components/UserApp.vue'
 
 
 export default {
   name: 'App',
   components: {
-    TodoApp
+    UserApp
   }
 }
 </script>

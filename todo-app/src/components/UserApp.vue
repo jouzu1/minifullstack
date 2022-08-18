@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2 class="text-center mt-5">Todo App</h2>
+    <h2 class="text-center mt-5">List User</h2>
     <!--INPUT-->
     <div class="d-flex">
       <input type="text" placeholder = "Enter Username" class="form-control">
@@ -75,6 +75,10 @@ export default {
     },
     async delete(username){
       await axios.delete(`http://localhost:8080/delete/${username}`).then(x=>console.log('ini delete' , x.data))
+    },
+
+    submitButton(){
+
     }
   },
   mounted(){
