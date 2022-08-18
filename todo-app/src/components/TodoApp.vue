@@ -1,27 +1,31 @@
 <template>
   <div class="container">
     <h2 class="text-center mt-5">Todo App</h2>
-
     <!--INPUT-->
     <div class="d-flex">
-      <input type="text" placeholder = "Enter Task" class="form-control">
-      <button class="btn btn-success rounded-0">SUBMIT</button>
+      <input type="text" placeholder = "Enter Username" class="form-control">
+      <input type="text" placeholder = "Enter Email" class="form-control">
+      <button @click="submitButton" class="btn btn-success rounded-0">SUBMIT</button>
     </div>
-
     <!--TASK TABLE-->
 <table class="table mt-5">
   <thead>
     <tr>
-      <th scope="col">Task</th>
+      <th scope="col">Username</th>
+      <th scope="col">Email</th>
+      <th scope="col">Created At</th>
+      <th scope="col">Updated At</th>
       <th scope="col">Status</th>
       <th scope="col" class="text-center"></th>
       <th scope="col" class="text-center"></th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Sleep</td>
-      <td>To-do</td>
+    <tr v-for="(data, index) in dataObj" :key="index">
+      <td>{{ data.username }}</td>
+      <td>{{ data.email }}</td>
+      <td>{{ data.createdAt }}</td>
+      <td>{{ data.updatedAt }}</td>
       <td class="text-center">
         <span class="fa fa-pen"></span>
       </td>
@@ -35,7 +39,6 @@
 </template>
 
 <script>
-// import Services from '../services'
 import axios from "axios";
 export default {
   name: 'HelloWorld',
@@ -44,19 +47,22 @@ export default {
   },
   data(){
     return{
-      data:{
         id:0,
         username:"",
         email:"",
         createdAt:"",
         updatedAt:"",
-        data:{}
-      }
+        dataObj:[],
+        dummy:[{username : "test1"}, {username : "test2"}]
     }
   },
   methods:{
     async getAll(){
-      await axios.get(`http://localhost:8080/get`).then(x=>console.log(x.data))
+      await axios.get(`http://localhost:8080/get`)
+      .then((x)=>{
+        this.dataObj = x.data
+        this.dataObj.forEach(x=>console.log(x.username))
+      })
     },
     async get(username){
       await axios.post(`http://localhost:8080/findOne`,username).then(x=>console.log('ini findOne' , x.data))
@@ -73,15 +79,13 @@ export default {
   },
   mounted(){
     this.getAll();
-    this.get("test")
+    this.get("test");
     // this.create({username : "jouzu", email : "jouzu"}).
     // this.update("jouzu",{username : "test"})
     // this.delete("test")
   }
 }
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>
