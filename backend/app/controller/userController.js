@@ -2,7 +2,6 @@ const db = require("../model/index");
 const User = db.tutorials;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new User
 exports.create = async (req, res) => {
 const CreateUser = {
     ...req.body
@@ -10,11 +9,9 @@ const CreateUser = {
 
 await User.create(CreateUser).then(x => {res.status(201).send(x)}).catch(err => {res.status(500).send({message : err})})
 };
-// Retrieve all User from the database.
 exports.findAll = async (req, res) => {
 await User.findAll().then(x => {res.status(200).send(x)}).catch(err => {res.status(500).send({message : err})})
 };
-// Find a single User with an id
 exports.findOne = async (req, res) => {
     const username = req.body.username;
     var condition = username ? { username: { [Op.like]: `%${username}%` } } : null;
@@ -34,7 +31,6 @@ exports.findOne = async (req, res) => {
         });
       });
 };
-// Update a User by the id in the request
 exports.update = async (req, res) => {
     const username = req.params.username;
 
@@ -52,7 +48,6 @@ exports.update = async (req, res) => {
         });
       });
 };
-// Delete a User with the specified id in the request
 exports.delete = async (req, res) => {
     const username = req.params.username;
     await User.destroy({
