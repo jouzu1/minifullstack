@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" id="app">
     <h2 class="text-center mt-5">List User</h2>
     <!--INPUT-->
     <div class="d-flex">
@@ -27,9 +27,16 @@
       <td>{{ data.createdAt }}</td>
       <td>{{ data.updatedAt }}</td>
       <td class="text-center">
-        <button>
+        <button id="show-modal" @click="showModal = true">
           <span class="fa fa-pen"></span>
         </button>
+        <Teleport to="body">
+          <PopUp :show="showModal" @close="showModal = false" @value="check" >
+            <template #header>
+              <h3>Edit user</h3>
+            </template>
+          </PopUp>
+        </Teleport>
       </td>
       <td class="text-center">
         <button @click="deleteButton(data.username)" >
@@ -44,10 +51,11 @@
 
 <script>
 import axios from "axios";
+import PopUp from "./PopUp.vue";
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  name: 'App',
+  components: {
+    PopUp
   },
   data(){
     return{
@@ -57,15 +65,22 @@ export default {
         createdAt:"",
         updatedAt:"",
         dataObj:[],
-        dummy:[{username : "test1"}, {username : "test2"}]
+        dummy:[{username : "test1"}, {username : "test2"}],
+        showModal: false
     }
   },
   methods:{
+    check(s){
+      // console.log(s);
+      this.update(s.username,s)
+      console.log(`http://localhost:8080/update/${s.username}`,s)
+      // window.location.reload()
+    },
     async getAll(){
       await axios.get(`http://localhost:8080/get`)
       .then((x)=>{
         this.dataObj = x.data
-        this.dataObj.forEach(x=>console.log(x.username))
+        // this.dataObj.forEach(x=>console.log(x.username))
       })
       .catch(x=>console.log(x))
     },
@@ -76,14 +91,14 @@ export default {
       await axios.post(`http://localhost:8080/create`,data).then(x=>console.log(x)).catch(x=>console.log(x))
     },
     async update(username, data){
-      await axios.put(`http://localhost:8080/update/${username}`,data).then(x=>console.log('ini update' , x.data))
+      await axios.put(`http://localhost:8080/update/${username}`,data).then(x=>console.log('Data Updated' , x.data))
     },
     async delete(username){
       await axios.delete(`http://localhost:8080/delete/${username}`).then(x=>console.log(x.data))
     },
 
     submitButton(){
-      if(this.username.length === 0 && this.email.length === 0){
+      if(this.username.length === 0 || this.email.length === 0){
         return
       }
       this.create({username : this.username, email : this.email})
